@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedir Delivery</title>
+    <style>
+        * {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        .promo-banner {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .promo-banner h3 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 800;
+        }
+        
+        .promo-banner p {
+            margin: 5px 0 0 0;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        h2 {
+            text-align: center;
+            color: #1e3c72;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        .input-telefono {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .input-telefono:focus {
+            outline: none;
+            border-color: #1e3c72;
+        }
+        
+        .info-usos {
+            background: #f0f4ff;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 14px;
+            color: #1e3c72;
+        }
+        
+        .info-usos .usos-restantes {
+            font-weight: bold;
+            color: #25D366;
+        }
+        
+        .info-usos .sin-usos {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .mensaje-bloqueo {
+            background: #e74c3c;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .botones {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .btn {
+            padding: 15px 20px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.2s;
+        }
+        
+        .btn-whatsapp {
+            background: linear-gradient(135deg, #25D366 0%, #20BF6A 100%);
+            color: white;
+        }
+        
+        .btn-telegram {
+            background: linear-gradient(135deg, #0088cc 0%, #00A3E0 100%);
+            color: white;
+        }
+        
+        .descuento-badge {
+            background: #FFD700;
+            color: #333;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+        
+        .icono {
+            width: 24px;
+            height: 24px;
+        }
+        
+        .registro-seccion {
+            border-top: 2px solid #eee;
+            padding-top: 20px;
+        }
+        
+        .registro-titulo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .registro-titulo h3 {
+            margin: 0;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .btn-limpiar {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .btn-limpiar:hover {
+            background: #c0392b;
+        }
+        
+        .lista-codigos {
+            max-height: 150px;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            border-radius: 10px;
+        }
+        
+        .codigo-item {
+            padding: 10px 12px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 12px;
+        }
+        
+        .codigo-item:last-child {
+            border-bottom: none;
+        }
+        
+        .codigo-valor {
+            font-weight: bold;
+            color: #1e3c72;
+        }
+        
+        .codigo-telefono {
+            color: #888;
+            font-size: 10px;
+        }
+        
+        .vacio {
+            text-align: center;
+            color: #999;
+            padding: 20px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="promo-banner">
+            <h3>🎉 20% DTO</h3>
+            <p>¡Máximo 2 pedidos por semana!</p>
+        </div>
+        
+        <h2>🚗 Mi Delivery</h2>
+        
+        <input type="tel" id="input-telefono" class="input-telefono" 
+               placeholder="Tu número WhatsApp" maxlength="15">
+        
+        <div class="info-usos" id="info-usos">
+            Ingresa tu número para verificar usos
+        </div>
+        
+        <div class="mensaje-bloqueo" id="mensaje-bloqueo" style="display: none;">
+            ⚠️ Límite alcanzado esta semana.<br>
+            <small>Pronto podrás ordenar de nuevo.</small>
+        </div>
+        
+        <div class="botones">
+            <a id="btn-whatsapp" href="#" target="_blank" class="btn btn-whatsapp">
+                <svg class="icono" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.149-.099.327-.347.446-.521.119-.174.198-.298.298-.397.099-.099.174-.198.297-.298.401-.098.745-.086.975-.099.297-.099.594-.049.768.149.174.198.572.595.572.743 0 .149-.02.595-.05.77-.149.894-1.17 1.914-1.712 2.174-.395.19-1.136.347-1.622.347-.149 0-.297-.02-.424-.02-.124 0-.248.02-.357.02-.208 0-.446-.149-.672-.447-.149-.199-.446-.595-.446-.794v-1.194c0-.199-.149-.397-.297-.595-.297-.297-.595-.347-.795-.347-.198 0-.446.149-.446.347 0 .148.124.471.446.744.273.248.595.496.87.546.198.02.397.02.595.02.174 0 .347-.02.496-.099.174-.099.347-.248.446-.447.124-.198.124-.397.124-.546 0-.149-.02-.297-.02-.397-.099-.198-.124-.347-.248-.496l-.447-.744c-.124-.248-.248-.595-.347-.794-.099-.198-.174-.347-.248-.496-.099-.149-.149-.297-.124-.447 0-.099.02-.198.099-.297.099-.124.174-.248.273-.347.124-.124.248-.248.347-.347.174-.124.347-.273.496-.447.198-.248.347-.496.496-.795.099-.248.149-.496.149-.744 0-.248-.02-.496-.099-.744-.099-.297-.347-.595-.644-.795-.297-.198-.595-.297-.893-.297-.174 0-.347.02-.521.02-.198 0-.396-.02-.595-.099-.198-.099-.396-.248-.595-.446-.198-.198-.347-.396-.446-.595-.124-.198-.174-.396-.124-.595 0-.198.099-.347.198-.496.099-.124.174-.248.273-.347.099-.099.198-.174.297-.248l.347-.347c.124-.124.248-.248.347-.347l.347-.347c.198-.198.347-.347.496-.546.149-.198.273-.396.347-.595.124-.248.198-.496.248-.744.049-.248.049-.496.049-.744 0-.198-.02-.396-.049-.595-.049-.297-.149-.595-.347-.842-.198-.248-.495-.495-.842-.642-.347-.149-.744-.248-1.089-.248-.347 0-.694.049-1.04.149-.347.099-.694.248-1.04.496-.347.248-.595.545-.744.893-.174.347-.273.694-.273 1.089 0 .347.099.694.298 1.04.199.347.546.743.941 1.04.347.248.744.496 1.089.644.347.149.694.248 1.04.248h.049c.347 0 .694-.099 1.04-.298.347-.198.694-.496.941-.842.248-.347.446-.744.546-1.089.124-.347.174-.694.174-1.089v-.049c0-.124-.02-.248-.049-.372z"/>
+                </svg>
+                Pedir por WhatsApp
+                <span class="descuento-badge">-20%</span>
+            </a>
+            
+            <a id="btn-telegram" href="#" target="_blank" class="btn btn-telegram">
+                <svg class="icono" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.86 4.326-2.96-.924c-.64-.203-.656-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.94z"/>
+                </svg>
+                Pedir por Telegram
+                <span class="descuento-badge">-20%</span>
+            </a>
+        </div>
+        
+        <div class="registro-seccion">
+            <div class="registro-titulo">
+                <h3>📋 Registro de Códigos</h3>
+                <button class="btn-limpiar" onclick="limpiarRegistro()">🗑️</button>
+            </div>
+            <div class="lista-codigos" id="lista-codigos">
+                <div class="vacio">No hay códigos</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =====================
+        // CONFIGURACIÓN
+        // =====================
+        const CONFIG = {
+            telefonoNegocio: "50762835638",
+            usuarioTelegram: "MiDeliveryBot",
+            maxUsosSemana: 2
+        };
+
+        // =====================
+        // FUNCIONES
+        // =====================
+        
+        function getSemanaActual() {
+            const now = new Date();
+            const day = now.getDay();
+            const diff = now.getDate() - day + (day === 0 ? -6 : 1);
+            const monday = new Date(now.setDate(diff));
+            return monday.toISOString().split('T')[0];
+        }
+
+        function getUsosSemana(telefono) {
+            const semana = getSemanaActual();
+            const key = 'usos_' + semana + '_' + telefono;
+            return parseInt(localStorage.getItem(key) || '0');
+        }
+
+        function contarUsos(telefono) {
+            const semana = getSemanaActual();
+            const key = 'usos_' + semana + '_' + telefono;
+            const actuales = parseInt(localStorage.getItem(key) || '0');
+            const nuevo = actuales + 1;
+            localStorage.setItem(key, nuevo);
+            return nuevo;
+        }
+
+        function generarCodigo() {
+            return 'DELIV-' + Math.floor(1000 + Math.random() * 9000);
+        }
+
+        function guardarCodigo(codigo, telefono) {
+            let registro = JSON.parse(localStorage.getItem('deliveryRegistro') || '[]');
+            registro.unshift({
+                codigo: codigo,
+                telefono: telefono,
+                fecha: new Date().toLocaleString('es-GT')
+            });
+            localStorage.setItem('deliveryRegistro', JSON.stringify(registro));
+            actualizarVista();
+        }
+
+        function actualizarVista() {
+            const lista = document.getElementById('lista-codigos');
+            const registro = JSON.parse(localStorage.getItem('deliveryRegistro') || '[]');
+            
+            if (registro.length === 0) {
+                lista.innerHTML = '<div class="vacio">No hay códigos</div>';
+                return;
+            }
+            
+            lista.innerHTML = registro.slice(0, 10).map(item => 
+                '<div class="codigo-item">' +
+                    '<div class="codigo-valor">' + item.codigo + '</div>' +
+                    '<div class="codigo-telefono">' + item.telefono + ' - ' + item.fecha + '</div>' +
+                '</div>'
+            ).join('');
+        }
+
+        function limpiarRegistro() {
+            if (confirm('¿Limpiar registro?')) {
+                localStorage.removeItem('deliveryRegistro');
+                actualizarVista();
+            }
+        }
+
+        function verificarYGenerar() {
+            const input = document.getElementById('input-telefono');
+            const telefono = input.value.replace(/\D/g, '');
+            
+            if (telefono.length < 8) {
+                alert('Ingresa un número válido');
+                return;
+            }
+
+            const usos = getUsosSemana(telefono);
+            const infoUsos = document.getElementById('info-usos');
+            const btnWhatsapp = document.getElementById('btn-whatsapp');
+            const btnTelegram = document.getElementById('btn-telegram');
+            const msgBloqueo = document.getElementById('mensaje-bloqueo');
+
+            if (usos >= CONFIG.maxUsosSemana) {
+                infoUsos.innerHTML = '<span class="sin-usos">⚠️ Límite alcanzado (2/2)</span>';
+                msgBloqueo.style.display = 'block';
+                btnWhatsapp.style.pointerEvents = 'none';
+                btnWhatsapp.style.opacity = '0.5';
+                btnTelegram.style.pointerEvents = 'none';
+                btnTelegram.style.opacity = '0.5';
+                return;
+            }
+
+            const restantes = CONFIG.maxUsosSemana - usos;
+            infoUsos.innerHTML = 'Te quedan <span class="usos-restantes">' + restantes + '</span> pedidos esta semana';
+
+            const codigo = generarCodigo();
+            const mensaje = 'Hola, quiero mi delivery.\n\n📦 Código: ' + codigo + '\n\n🎉 APLICO: 20% de descuento';
+
+            // WhatsApp
+            btnWhatsapp.href = 'https://wa.me/' + CONFIG.telefonoNegocio + '?text=' + encodeURIComponent(mensaje);
+            
+            // Telegram  
+            btnTelegram.href = 'https://t.me/' + CONFIG.usuarioTelegram + '?text=' + encodeURI
